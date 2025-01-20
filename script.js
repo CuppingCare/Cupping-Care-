@@ -1,56 +1,42 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
+// Switch between login and signup forms
+document.getElementById('show-signup').addEventListener('click', () => {
+  document.querySelector('.login-container').style.display = 'none';
+  document.querySelector('.signup-container').style.display = 'block';
+});
 
-.login-container, .signup-container {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-}
+document.getElementById('show-login').addEventListener('click', () => {
+  document.querySelector('.signup-container').style.display = 'none';
+  document.querySelector('.login-container').style.display = 'block';
+});
 
-h2 {
-  text-align: center;
-}
+// Firebase Login
+document.getElementById('login-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      alert('Login Successful!');
+      console.log('User:', userCredential.user);
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
 
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+// Firebase Sign-Up
+document.getElementById('signup-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const email = document.getElementById('signup-email').value;
+  const password = document.getElementById('signup-password').value;
 
-button:hover {
-  background-color: #45a049;
-}
-
-p {
-  text-align: center;
-}
-
-p a {
-  color: #007BFF;
-  text-decoration: none;
-}
-
-p a:hover {
-  text-decoration: underline;
-      }
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      alert('Sign-Up Successful!');
+      console.log('User:', userCredential.user);
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
